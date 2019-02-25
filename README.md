@@ -1,1 +1,1 @@
-# anky-sentense
+# anky-sentence
