@@ -1,8 +1,6 @@
 package com.wakabatimes.ankysentence.app.domain.service.user;
 
-import com.wakabatimes.ankysentence.app.domain.model.user.User;
-import com.wakabatimes.ankysentence.app.domain.model.user.UserId;
-import com.wakabatimes.ankysentence.app.domain.model.user.UserMailAddress;
+import com.wakabatimes.ankysentence.app.domain.model.user.*;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -23,7 +21,12 @@ public interface UserService {
      * ユーザーアクティベイト
      * @param hash
      */
-    void activate(UserMailAddress userMailAddress, String hash);
+    void activate(UserMailAddress userMailAddress, UserHash hash);
+
+    /**
+     * ハッシュからユーザー確認
+     */
+    UserHash getHashByUserId(UserId userId);
 
     /**
      * パスワード再設定メール
@@ -36,7 +39,7 @@ public interface UserService {
      * @param hash
      * @param password
      */
-    void passwordReset(String hash, String password);
+    void passwordReset(UserHash hash, UserPassword password);
 
     /**
      * ユーザーの退会
@@ -49,5 +52,12 @@ public interface UserService {
      * @param user
      */
     void update(User user);
+
+    /**
+     * ユーザーの参照
+     * @param userId
+     * @return
+     */
+    User getById(UserId userId);
 
 }

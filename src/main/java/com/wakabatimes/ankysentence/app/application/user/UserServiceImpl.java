@@ -17,10 +17,10 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    MailConfig mailConfig;
+    private MailConfig mailConfig;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void activate(UserMailAddress userMailAddress, String hash) {
+    public void activate(UserMailAddress userMailAddress, UserHash hash) {
         User user = userRepository.getUserByMail(userMailAddress.getValue());
         UserId userId = user.getUserId();
         Long count = userRepository.countUserHashAndUserId(userId, hash);
@@ -98,6 +98,12 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("URLが不正です。");
         }
     }
+
+    @Override
+    public UserHash getHashByUserId(UserId userId) {
+        return userRepository.getHashByUserId(userId);
+    }
+
 
     @Override
     public void passwordRemindMail(UserMailAddress userMailAddress) throws NoSuchAlgorithmException {
@@ -144,11 +150,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void passwordReset(String hash, String password) {
+    public void passwordReset(UserHash hash, UserPassword password) {
         Long count = userRepository.countUserHash(hash);
         if(count > 0) {
             UserId userId = userRepository.getUserIdByHash(hash);
-            UserPassword userPassword = new UserPassword(password,bCryptPasswordEncoder);
+            UserPassword userPassword = new UserPassword(password.getValue(),bCryptPasswordEncoder);
             userRepository.updatePassword(userId,userPassword);
         }else {
             throw new RuntimeException("URLが不正です。");
@@ -170,5 +176,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void update(User user) {
         userRepository.update(user);
+    }
+
+    @Override
+    public User getById(UserId userId) {
+        return userRepository.getById(userId);
     }
 }

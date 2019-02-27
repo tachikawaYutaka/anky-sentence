@@ -29,8 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
         UserStatus userStatus = UserStatus.getById(userDto.getStatus());
         UserRole userRole = UserRole.getById(userDto.getRole());
 
-        User user = new User(userId, userMailAddress2, userPassword, userStatus,userRole);
-        return user;
+        return new User(userId, userMailAddress2, userPassword, userStatus,userRole);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
         if(!users.contains(user)) {
             userMapper.save(input);
         }else {
-            throw new RuntimeException("ユーザー名またはメールアドレスが既に登録されています。");
+            throw new RuntimeException("メールアドレスが既に登録されています。");
         }
     }
 
@@ -73,10 +72,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Long countUserHashAndUserId(UserId userId, String hash) {
+    public Long countUserHashAndUserId(UserId userId, UserHash hash) {
         RelateUserHashToUserDto relateUserHashToUserDto = new RelateUserHashToUserDto();
         relateUserHashToUserDto.setId(userId.getValue());
-        relateUserHashToUserDto.setHash(hash);
+        relateUserHashToUserDto.setHash(hash.getValue());
         return relateUserHashToUserMapper.countUserHashAndUserId(relateUserHashToUserDto);
     }
 
@@ -89,12 +88,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserId getUserIdByHash(String hash) {
+    public UserId getUserIdByHash(UserHash hash) {
         RelateUserHashToUserDto relateUserHashToUserDto = new RelateUserHashToUserDto();
-        relateUserHashToUserDto.setHash(hash);
+        relateUserHashToUserDto.setHash(hash.getValue());
         RelateUserHashToUserDto result = relateUserHashToUserMapper.getUserIdByHash(relateUserHashToUserDto);
-        UserId userId = new UserId(result.getId());
-        return userId;
+        return new UserId(result.getId());
     }
 
     @Override
@@ -132,9 +130,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Long countUserHash(String hash) {
+    public Long countUserHash(UserHash hash) {
         RelateUserHashToUserDto relateUserHashToUserDto = new RelateUserHashToUserDto();
-        relateUserHashToUserDto.setHash(hash);
+        relateUserHashToUserDto.setHash(hash.getValue());
         return relateUserHashToUserMapper.countUserHash(relateUserHashToUserDto);
     }
 
@@ -144,5 +142,34 @@ public class UserRepositoryImpl implements UserRepository {
         userDto.setId(userId.getValue());
         userDto.setPassword(userPassword.getValue());
         userMapper.updateUserPassword(userDto);
+    }
+
+    @Override
+    public UserHash getHashByUserId(UserId userId) {
+        RelateUserHashToUserDto relateUserHashToUserDto = new RelateUserHashToUserDto();
+        relateUserHashToUserDto.setId(userId.getValue());
+        RelateUserHashToUserDto result = relateUserHashToUserMapper.getHashByUserId(relateUserHashToUserDto);
+        if(result != null){
+            return new UserHash(result.getHash());
+        }else {
+            throw new RuntimeException("存在しません。");
+        }
+    }
+
+    @Override
+    public User getById(UserId userId) {
+        UserDto input = new UserDto();
+        input.setId(userId.getValue());
+        UserDto result = userMapper.getById(input);
+        if(result != null) {
+            UserId userId1 = new UserId(result.getId());
+            UserMailAddress userMailAddress = new UserMailAddress(result.getMailAddress());
+            UserPassword userPassword = new UserPassword(result.getPassword());
+            UserStatus userStatus = UserStatus.getById(result.getStatus());
+            UserRole userRole = UserRole.getById(result.getRole());
+            return new User(userId1,userMailAddress,userPassword,userStatus,userRole);
+        }else {
+            throw new RuntimeException("指定されたユーザーは存在しません");
+        }
     }
 }
