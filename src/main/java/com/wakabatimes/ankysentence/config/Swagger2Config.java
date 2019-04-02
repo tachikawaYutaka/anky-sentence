@@ -12,6 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import static com.google.common.base.Predicates.or;
 import static com.wakabatimes.ankysentence.config.ApiUrlConstants.API_URL;
+import static com.wakabatimes.ankysentence.config.ApiUrlConstants.API_VERSION;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 
@@ -35,8 +36,8 @@ public class Swagger2Config {
     }
 
     private ApiInfo apiInfo() {
-        return  new ApiInfoBuilder().title("BMC API")
-                .version("1.0")
+        return  new ApiInfoBuilder().title("anky-sentense API")
+                .version(API_VERSION)
                 .build();
     }
 }

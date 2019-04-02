@@ -1,1 +1,0 @@
-package com.wakabatimes.ankysentence.config;

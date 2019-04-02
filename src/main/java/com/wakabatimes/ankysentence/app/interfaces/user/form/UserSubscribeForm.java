@@ -1,20 +1,21 @@
 package com.wakabatimes.ankysentence.app.interfaces.user.form;
 
+import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+@Data
 public class UserSubscribeForm {
-    private String userMailAddress;
-    private String userPassword;
+    private String mail;
+    private String password;
 
     public void encrypt(PasswordEncoder encoder){
-        this.userPassword = encoder.encode(userPassword);
+        this.password = encoder.encode(password);
     }
 
     @Override
     public String toString() {
         return "UserForm{" +
-                ", userMailaddress='" + userMailAddress + '\'' +
-                ", userPassword='" + userPassword + '\'' +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

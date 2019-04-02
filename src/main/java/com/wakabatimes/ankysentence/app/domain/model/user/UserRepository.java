@@ -43,14 +43,14 @@ public interface UserRepository {
     /**
      * getUserIdByHash
      * @param hash
-     * @return
+     * @return UserId
      */
     UserId getUserIdByHash(UserHash hash);
 
     /**
      * getUserByMailAddress
      * @param userMailAddress
-     * @return
+     * @return User
      */
     User getUserByMailAddress(UserMailAddress userMailAddress);
 
@@ -70,13 +70,14 @@ public interface UserRepository {
      * countUserByIdAndMail
      * @param userId
      * @param userMailAddress
+     * @return Long
      */
     Long countUserByIdAndMail(UserId userId, UserMailAddress userMailAddress);
 
     /**
      * countUserHash
      * @param hash
-     * @return
+     * @return Long
      */
     Long countUserHash(UserHash hash);
 
@@ -90,13 +91,21 @@ public interface UserRepository {
     /**
      * getHashByUserId
      * @param userId
+     * @return UserHash
      */
     UserHash getHashByUserId(UserId userId);
 
     /**
      * getById
      * @param userId
-     * @return
+     * @return User
      */
     User getById(UserId userId);
+
+    /**
+     * getUserByHash
+     * @param userHash
+     * @return User
+     */
+    User getUserByHash(UserHash userHash);
 }

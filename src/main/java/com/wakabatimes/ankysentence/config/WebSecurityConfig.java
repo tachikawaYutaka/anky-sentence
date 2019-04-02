@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(API_URL + "/user/csrf-token",
                         API_URL + "/user/remind",
                         API_URL + "/user/password-reset",
+                        API_URL + "/users/activate/**",
                         API_URL + SIGNUP_URL,
                         API_URL + LOGIN_URL,
                         "/swagger-resources/**",

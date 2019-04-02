@@ -125,7 +125,7 @@ public class UserServiceTest {
         userService.save(user);
 
         UserMailAddress userMailAddress1 = new UserMailAddress("aaa@aaa.aaa");
-        UserPassword userPassword1 = new UserPassword("aaaaa",bCryptPasswordEncoder);
+        UserPassword userPassword1 = new UserPassword("aaaaaaaaaa",bCryptPasswordEncoder);
         User user1 = new User(user.getUserId(),userMailAddress1,userPassword1,user.getUserStatus(),user.getUserRole());
         userService.update(user1);
     }

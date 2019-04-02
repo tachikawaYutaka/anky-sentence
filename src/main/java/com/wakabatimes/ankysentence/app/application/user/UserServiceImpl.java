@@ -182,4 +182,9 @@ public class UserServiceImpl implements UserService{
     public User getById(UserId userId) {
         return userRepository.getById(userId);
     }
+
+    @Override
+    public User getUserByHash(UserHash userHash) {
+        return userRepository.getUserByHash(userHash);
+    }
 }

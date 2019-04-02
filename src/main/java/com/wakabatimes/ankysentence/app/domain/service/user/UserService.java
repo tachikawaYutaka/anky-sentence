@@ -60,4 +60,10 @@ public interface UserService {
      */
     User getById(UserId userId);
 
+    /**
+     * hashからのユーザーの参照
+     * @param userHash
+     * @return
+     */
+    User getUserByHash(UserHash userHash);
 }

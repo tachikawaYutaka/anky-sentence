@@ -1,5 +1,6 @@
 package com.wakabatimes.ankysentence.app.infrastructure.user.mapper;
 
+import com.wakabatimes.ankysentence.app.infrastructure.user.dto.RelateUserHashToUserDto;
 import com.wakabatimes.ankysentence.app.infrastructure.user.dto.UserDto;
 import org.apache.ibatis.annotations.*;
 
@@ -64,4 +65,9 @@ public interface UserMapper {
     @Select("SELECT * from anky_user u\n" +
             "WHERE u.id = #{id};")
     UserDto getById(UserDto input);
+
+    @Select("SELECT a.* FROM anky_user a\n" +
+            "LEFT JOIN relate_user_hash_to_user h ON a.id = h.id\n" +
+            "WHERE h.hash = #{hash};")
+    UserDto getUserByHash(RelateUserHashToUserDto input);
 }

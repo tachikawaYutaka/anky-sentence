@@ -172,4 +172,21 @@ public class UserRepositoryImpl implements UserRepository {
             throw new RuntimeException("指定されたユーザーは存在しません");
         }
     }
+
+    @Override
+    public User getUserByHash(UserHash userHash) {
+        RelateUserHashToUserDto input = new RelateUserHashToUserDto();
+        input.setHash(userHash.getValue());
+        UserDto result = userMapper.getUserByHash(input);
+        if(result != null) {
+            UserId userId1 = new UserId(result.getId());
+            UserMailAddress userMailAddress = new UserMailAddress(result.getMailAddress());
+            UserPassword userPassword = new UserPassword(result.getPassword());
+            UserStatus userStatus = UserStatus.getById(result.getStatus());
+            UserRole userRole = UserRole.getById(result.getRole());
+            return new User(userId1,userMailAddress,userPassword,userStatus,userRole);
+        }else {
+            throw new RuntimeException("指定されたユーザーは存在しません");
+        }
+    }
 }
